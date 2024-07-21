@@ -1,6 +1,6 @@
 # class TestClass:
 #     def get_name(self):
-#         print('Test')
+        # print('Test')
 
 class Users:
     name = "Jon"
@@ -19,3 +19,23 @@ class Users:
     
     def  get_last_name(self):
         return f'{self.last_name}'
+
+
+
+
+
+class MyClass:
+    class_attribute = 10
+    def __init__(self , instance_attribute):
+        self.instance_attribute = instance_attribute
+
+my_instance_attribute = MyClass(20)
+print(MyClass.__dict__)
+print(my_instance_attribute.__dict__)
+
+
+a = 10
+b = 10
+
+print(id(a))
+print(id(b))
