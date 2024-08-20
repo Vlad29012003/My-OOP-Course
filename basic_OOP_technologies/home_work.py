@@ -174,3 +174,113 @@ print(b.version)
 
 # Декоратор @singledispatch из модуля functools позволяет реализовать одноимённый метод, который может по-разному обрабатывать аргументы в зависимости от их типа. 
 # Это позволяет создавать функции с разным поведением в зависимости от типа входного аргумента, что напоминает перегрузку функций в других языках программирования.
+
+
+# Напишите класс, который будет содержать методы get_number, которые принимают int и str.
+# Из метода, который принимает int, необходимо вернуть значение 100.
+# Далее обращаемся к нашему классу извне, вызываем метод который возвращает int и выводим
+# результат на экран.
+
+from functools import singledispatch
+
+class Number:
+    @singledispatch
+    def get_number(value):
+        pass
+
+    @get_number.register(int)
+    def get_number_int(arg):
+        return f'hey dude your number is integer {arg}'
+
+    @get_number.register(str)
+    def get_number_srt(arg):
+        return f"hey dude your number is string"
+
+
+print(Number.get_number(12))
+
+
+
+# Теоретические вопросы и задачи
+
+# 1. Декоратор staticmethod
+# Теория
+
+# Что такое staticmethod в Python?
+
+# staticmethod делает метод статичным, что означает, что такой метод:
+
+# Не имеет доступа к атрибутам экземпляра класса (self).
+# Не имеет доступа к атрибутам самого класса (cls).
+# Ведет себя как обычная функция, но находится внутри класса, и может быть вызван напрямую через класс или его экземпляр.
+
+class MyClass:
+    @staticmethod
+    def my_static_method():
+        return "Это статический метод"
+    
+print(MyClass.my_static_method())
+
+a = MyClass()
+
+print(a.my_static_method())
+
+
+# Когда и почему использовать staticmethod вместо обычного метода класса?
+
+# Логически связан с классом, но не использует и не изменяет атрибуты или методы класса и его экземпляров.
+# Выполняет какую-то функцию, которая имеет смысл в контексте класса, но при этом не зависит от состояния конкретного объекта или класса в целом.
+
+# В чем отличие между staticmethod и classmethod?
+
+# Таким образом, staticmethod используется для функций, связанных с классом по логике, но не требующих доступа к его структуре, 
+# а classmethod — когда нужен доступ к самому классу, чтобы, например, модифицировать его состояние или поведение.
+
+
+# выбирайте staticmethod, когда метод не зависит от класса и его экземпляров, 
+# а classmethod — когда нужно работать с классом на уровне его структуры и состояния.
+
+# Создайте класс Calculator с методом add, который будет статическим и складывать два числа. 
+# Вызовите этот метод без создания экземпляра класса.
+
+
+class Calculator:
+    @staticmethod
+    def add(x , y):
+        return x + y
+    
+print(Calculator.add(10 , 10))
+
+
+# Добавьте в класс Utility статический метод reverse_string, который принимает строку и возвращает её в обратном порядке.
+
+class Utility:
+    @staticmethod
+    def reverse_string(string):
+        return string[::-1]
+
+print(Utility.reverse_string('arthur'))
+
+
+# Реализуйте класс MathOperations, который содержит статический метод для вычисления факториала числа.
+import math
+
+class MathOperations:
+    @staticmethod
+    def math_factorial(number):
+        return math.factorial(number)
+
+
+print(MathOperations.math_factorial(4))
+            
+
+# Создайте класс, который содержит статический метод для проверки, является ли переданная строка палиндромом.
+
+
+class Check:
+    @staticmethod
+    def check_string_palindrome(value):
+        a = value.lower()
+        return a == a[::-1]
+
+print(Check.check_string_palindrome('Alla'))
