@@ -398,6 +398,151 @@ class LibraryBook:
 result = LibraryBook(title='The tru history' , author='grothery' , year=1943)
 
 print(result.get_book())
+class LibraryBook:
+    __slots__ = ['title' ,'author', 'year']
+
+    def __init__(self ,title , author , year):
+        self.title = title
+        self.author = author
+        self.year = year
 
 
+    def get_book(self):
+        return self.title , self.author , self.year
+    
+
+result = LibraryBook(title='The tru history' , author='grothery' , year=1943)
+
+print(result.get_book())
+
+
+
+# Магический метод __new__
+# Теория:
+# Что делает магический метод __new__ и как он отличается от __init__?
+
+# магический метод __new__  нужен для создание нового экземпляра класса
+# Он вызывается перед __init__ и фактически создает объект, который затем передается в __init__ для инициализации.
+
+# В каких случаях нужно переопределять __new__?
+
+
+# Переопределять метод __new__ нужно в случаях, когда вам требуется особый контроль над созданием экземпляра класса. 
+# Вот несколько сценариев, когда это может быть необходимо:
+
+
+
+# Если вы работаете с неизменяемыми типами данных, такими как кортежи, строки или числа,
+# и вам нужно изменить процесс создания объекта, __new__ — это единственный способ это сделать. 
+# Это связано с тем, что после создания экземпляра неизменяемого объекта его атрибуты нельзя изменить через __init__.
+
+
+# Синглтоны (одиночки):
+# Когда вы хотите ограничить класс одним единственным экземпляром (например, класс настроек приложения),
+#  __new__ используется для проверки наличия существующего экземпляра и возвращения его вместо создания нового.
+
+
+# Как правильно использовать __new__ при создании синглтонов?
+
+# Создание синглтона с помощью __new__ позволяет ограничить класс одним единственным экземпляром. 
+# Это полезно, когда тебе нужно, чтобы от класса существовал только один объект, например, для хранения глобальных настроек или управления ресурсами.
+
+
+class Singleton:
+    _instance = None  # Статическая переменная для хранения единственного экземпляра
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:  # Проверяем, существует ли уже экземпляр
+            cls._instance = super().__new__(cls)  # Создаем новый экземпляр
+        return cls._instance  # Возвращаем единственный экземпляр
+
+    def __init__(self, value):
+        self.value = value  # Инициализируем значение
+
+# Пример использования
+s1 = Singleton(10)
+s2 = Singleton(20)
+
+print(s1.value)  # 10 - значение первого созданного экземпляра
+print(s2.value)  # 10 - оба экземпляра ссылаются на один и тот же объект
+print(s1 is s2)  # True - оба переменных ссылаются на один и тот же объект
+
+
+# Создайте класс Singleton, используя метод __new__, чтобы ограничить создание только одного экземпляра.
+
+class Singleton:
+    _instance = None
+
+    def __new__(cls , *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self , value):
+        self.value = value
+
+object = Singleton('wdwd')
+print(object.value)
+
+
+# Реализуйте класс ImmutablePoint, который будет создавать неизменяемые точки (x, y).
+#  Используйте метод __new__, чтобы заблокировать изменение значений после создания.
+
+# class ImmutablePoint:
+#     __slots__ = ['x' , 'y']
+
+#     def __new__(cls ,*args, **kwargs):
+#         instance = super().__new__(cls)
+#         return instance
+
+#     def __init__(self , x , y):
+#         self.x = x
+#         self.y = y
+
+
+
+#     @property
+#     def x(self):
+#         return self._x
+
+#     @property
+#     def y(self):
+#         return self._y
+
+#     def __setattr__(self, name, value):
+#         if hasattr(self, '_x') and hasattr(self, '_y'):
+#             raise AttributeError("Cannot modify attributes of ImmutablePoint")
+#         super().__setattr__(name, value)
+
+#     def __delattr__(self, name):
+#         raise AttributeError("Cannot delete attributes of ImmutablePoint")
+
+# point = ImmutablePoint(10, 20)
+# print(point.x)  # 10
+# print(point.y)  # 20
+
+
+# Создайте класс CustomObject, который при создании экземпляра возвращает строку вместо объекта.
+
+class CustomObject:
+
+    def __new__(cls ,attribute , *args, **kwargs):
+        return str(attribute)
+
+object = CustomObject(attribute='efefsfsfsf')
+print(object)
+
+
+# Реализуйте класс, который использует __new__, чтобы изменить поведение наследования от другого класса.
+
+class BaseClass:
+    def __new__(cls, *args, **kwargs):
+        print(f"Creating instance of {cls.__name__}")
+        return super().__new__(cls)
+
+
+class DerivedClass(BaseClass):
+    def __new__(cls, *args, **kwargs):
+        print(f'creating instance pf {cls.__name__} from DerivedClass')
+        return super().__new__(cls)
     
