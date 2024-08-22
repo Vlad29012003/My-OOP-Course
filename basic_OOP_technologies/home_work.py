@@ -284,3 +284,120 @@ class Check:
         return a == a[::-1]
 
 print(Check.check_string_palindrome('Alla'))
+
+
+# 2. __slots__
+
+# Что такое __slots__ в Python и зачем они используются?
+
+
+# Обычно в Python каждый объект хранит свои атрибуты в специальном месте, называемом словарем (__dict__). 
+# Этот словарь позволяет добавлять и изменять атрибуты на лету. Но за это приходится платить дополнительной памятью, так как словарь занимает много места.
+
+# Когда ты используешь __slots__, Python не создает словарь для каждого объекта.
+# Вместо этого, он резервирует фиксированное место для тех атрибутов, которые ты указал в __slots__. 
+# Это экономит память, но взамен объект теряет возможность добавлять новые атрибуты, которых нет в __slots__.
+
+
+# Экономия памяти: Если у тебя много объектов одного класса, и ты точно знаешь, что каждому объекту нужно всего несколько атрибутов,
+#  __slots__ позволяет сэкономить память.
+
+# Быстрее доступ к атрибутам: Из-за того, что Python не нужно управлять словарем, доступ к атрибутам происходит быстрее.
+
+
+
+# Создайте класс Person, используя __slots__ для определения атрибутов name и age. 
+# Проверьте, что попытка добавления нового атрибута вызовет ошибку.
+
+
+class Person:
+    __slots__ = ['name' , 'age']
+
+    def __init__(self , name , age):
+        self.name = name
+        self.age = age
+
+    def get_data(self):
+        print(self.name)
+        print(self.age)
+
+
+person = Person(name='jach' , age=12)
+
+person.get_data()
+
+try:
+    person.male = 'male'
+except AttributeError as e:
+    print(f"ошибка {e}")
+        
+
+# Модифицируйте класс Car, чтобы он использовал __slots__ и ограничивался атрибутами make и model. 
+# Попробуйте добавить атрибут color и объясните результат.
+
+
+class Car:
+    __slots__ = ['make' , 'model']
+
+    def __init__(self , make , model):
+        self.make = make
+        self.model = model
+
+    def get_value(self):
+        print(self.make)
+        print(self.model)
+
+
+cars = Car(make = 'Tesla' , model= 'gtr')
+cars.get_value()
+
+try:
+    cars.author = 'Author'
+except AttributeError as e:
+    print(e)
+    
+
+
+
+
+# Создайте класс Rectangle с использованием __slots__, 
+# который вычисляет площадь прямоугольника. Определите атрибуты width и height и метод area.
+
+class Rectangle:
+    __slots__ = ['width' , 'height']
+
+    def __init__(self , width ,height ):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+    
+
+result = Rectangle(width= 3 , height= 2)
+print(result.area())
+
+
+# Реализуйте класс LibraryBook с атрибутами title, author, year, 
+# используя __slots__. Напишите методы для получения информации о книге.
+
+
+class LibraryBook:
+    __slots__ = ['title' ,'author', 'year']
+
+    def __init__(self ,title , author , year):
+        self.title = title
+        self.author = author
+        self.year = year
+
+
+    def get_book(self):
+        return self.title , self.author , self.year
+    
+
+result = LibraryBook(title='The tru history' , author='grothery' , year=1943)
+
+print(result.get_book())
+
+
+    
